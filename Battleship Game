@@ -16,6 +16,7 @@ int cloth = 0;
 int wood = 0;
 int metal = 0;
 int storage = 500;
+int loc = 1;
 
 int main(void)
 {
@@ -104,7 +105,37 @@ void Stats(char name[])
 
 void Move()
 {
-  printf("2");
+  char yn;
+  int curloc = loc;
+
+  printf("\nThere are three locations:\nlocation 1 - Easy Difficulty\nlocation 2 - Medium Difficulty\nlocation 3 - Hard Difficulty\n\nCurrent location: %d", loc);
+  do
+  {
+    printf("\n\nWould you like to move? Enter y or n -> ");
+    scanf(" %c", &yn);
+    if (yn != 'y' && yn != 'n')
+    {
+      printf("\nError! Enter y for yes or n for no!");
+    }
+  } while (yn != 'y' && yn != 'n');
+
+  if (yn == 'y')
+  {
+    do
+    {
+      printf("\nMove from location %d to location -> ", curloc);
+      scanf("%d", &loc);
+      if (loc > 3 || loc < 1)
+      {
+        printf("\nError! Choose location 1, 2, or 3!\n");
+      }
+    } while (loc > 3 || loc < 1);
+    printf("\nSucessfully moved to location %d\n\n", loc);
+  }
+  else
+  {
+    printf("\nStayed at location %d\n\n", loc);
+  }
 }
 
 void Attack()
