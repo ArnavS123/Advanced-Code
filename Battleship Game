@@ -2,8 +2,15 @@
 #include <stdlib.h>
 
 #define INITIALMAXHEALTH 100
+#define MINONE 25
+#define MAXONE 75
+#define MINTWO 75
+#define MAXTWO 150
+#define MINTHREE 150
+#define MAXTHREE 350
 
 int Seed();
+int Randnum(int, int);
 int Choose();
 void Stats(char[]);
 void Move();
@@ -11,6 +18,7 @@ void Attack();
 void Improve();
 void Rename(char*);
 
+int money = 100;
 int health = INITIALMAXHEALTH;
 int cloth = 0;
 int wood = 0;
@@ -31,6 +39,11 @@ int main(void)
 
   do
   {
+    if (health <= 0)
+    {
+      printf("\n%s has sunk! Game over!\n", name);
+      break;
+    }
     choice = Choose();
     switch (choice)
     {
@@ -52,10 +65,7 @@ int main(void)
     }
   } while (choice != 6);
 
-  if (choice == 6)
-  {
-    printf("\nThank you for playing!");
-  }
+  printf("\nThank you for playing!");
   
   return (0);
 }
@@ -75,6 +85,15 @@ int Seed()
   } while (seed <= 0);
 
   return (seed);
+}
+
+int Randnum(int maxval, int minval)
+{
+  int num;
+
+  num = rand() % (maxval - minval) + minval;
+  
+  return (num);
 }
 
 int Choose()
@@ -97,6 +116,7 @@ int Choose()
 void Stats(char name[])
 {
   printf("\nStats of '%s':", name);
+  printf("\nMoney: %d", money);
   printf("\nHealth: %d / %d", health, INITIALMAXHEALTH);
   printf("\nCloth: %d / %d", cloth, storage);
   printf("\nWood: %d / %d", wood, storage);
@@ -138,14 +158,23 @@ void Move()
   }
 }
 
-void Attack()
+void Attack() // KEEP THE DEFINED CONSTANTS FOR SHIP DAMAGE
 {
-  printf("3");
+  switch (loc)
+  {
+    case 1:
+      break;
+    case 2:
+      break;
+    case 3:
+      break;
+  }
+  health -= 100;
 }
 
 void Improve()
 {
-  printf("4");
+  printf("4"); // Upgrades can be 1, 2, 3, 4, 5.. times INITIALMAXHEALTH
 }
 
 void Rename(char *name)
