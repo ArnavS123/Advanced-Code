@@ -1,1 +1,145 @@
-Here
+#include <stdio.h>
+#include <stdlib.h>
+
+#define INITIALMAXHEALTH 100
+
+int Seed();
+int Choose();
+void Stats(char[]);
+void Move();
+void Attack();
+void Improve();
+void Rename(char*);
+
+int health = INITIALMAXHEALTH;
+int cloth = 0;
+int wood = 0;
+int metal = 0;
+int storage = 500;
+
+int main(void)
+{
+  int seed;
+  int choice;
+  char name[35] = "Your Ship";
+
+  seed = Seed();
+  srand(seed);
+
+  printf("\nWelcome to the battleship game!\n\nHere are your choices:\nChoice #1: Display Stats\nChoice #2: Move\nChoice #3: Attack\nChoice #4: Upgrade/Repair\nChoice #5: Rename Ship\nChoice #6: Exit\n\n");
+
+  do
+  {
+    choice = Choose();
+    switch (choice)
+    {
+      case 1:
+        Stats(name);
+        break;
+      case 2:
+        Move();
+        break;
+      case 3:
+        Attack();
+        break;
+      case 4:
+        Improve();
+        break;
+      case 5:
+        Rename(name);
+        break;
+    }
+  } while (choice != 6);
+
+  if (choice == 6)
+  {
+    printf("\nThank you for playing!");
+  }
+  
+  return (0);
+}
+
+int Seed()
+{
+  int seed;
+
+  do
+  {
+    printf("Please enter a seed -> ");
+    scanf("%d", &seed);
+    if (seed <= 0)
+    {
+      printf("\nError! Seed value must be positive (above 0)!\n\n");
+    }
+  } while (seed <= 0);
+
+  return (seed);
+}
+
+int Choose()
+{
+  int choice;
+
+  do
+  {
+    printf("Please select a choice (1 - 6) - > ");
+    scanf("%d", &choice);
+    if (choice < 1 || choice > 6)
+    {
+      printf("\nError! Choose an option between 1 and 6!\n\n");
+    }
+  } while (choice < 1 || choice > 6);
+
+  return (choice);
+}
+
+void Stats(char name[])
+{
+  printf("\nStats of '%s':", name);
+  printf("\nHealth: %d / %d", health, INITIALMAXHEALTH);
+  printf("\nCloth: %d / %d", cloth, storage);
+  printf("\nWood: %d / %d", wood, storage);
+  printf("\nMetal: %d / %d\n\n", metal, storage);
+}
+
+void Move()
+{
+  printf("2");
+}
+
+void Attack()
+{
+  printf("3");
+}
+
+void Improve()
+{
+  printf("4");
+}
+
+void Rename(char *name)
+{
+  char yn;
+
+  printf("\nCurrent name: %s", name);
+  do
+  {
+    printf("\n\nWould you like to change this name? Enter y or n -> ");
+    scanf(" %c", &yn);
+    if (yn != 'y' && yn != 'n')
+    {
+      printf("\nError! Enter y for yes or n for no!");
+    }
+  } while (yn != 'y' && yn != 'n');
+
+  if (yn == 'y')
+  {
+    printf("\nChange '%s' to -> ", name);
+    scanf("%s", name);
+    printf("\nNew ship name now saved as: %s\n\n", name);
+  }
+  else
+  {
+    printf("\nPrevious name of '%s' retained\n\n", name);
+  }
+}
