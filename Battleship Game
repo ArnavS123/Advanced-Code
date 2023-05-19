@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define INITIALMAXHEALTH 1000
+#define INITIALMAXHEALTH 100
+#define INITIALSTORAGE 500
+#define MAXSTORAGE 2000
 #define MINONE 25
 #define MAXONE 75
 #define MINTWO 75
@@ -16,7 +18,8 @@ void Stats(char[]);
 void Move();
 void Attack();
 void AttackEffects(int, int);
-void Improve();
+void ImproveStorage();
+void ImproveShip();
 void Rename(char*);
 
 int money = 100;
@@ -24,9 +27,8 @@ int health = INITIALMAXHEALTH;
 int cloth = 0;
 int wood = 0;
 int metal = 0;
-int storage = 500;
+int storage = INITIALSTORAGE;
 int loc = 1;
-int multiplier = 1;
 
 int main(void)
 {
@@ -59,7 +61,8 @@ int main(void)
         Attack();
         break;
       case 4:
-        Improve();
+        ImproveStorage();
+        ImproveShip();
         break;
       case 5:
         Rename(name);
@@ -186,13 +189,48 @@ void AttackEffects(int max, int min)
   metal += Randnum(max, min);
 }
 
-void Improve()
+void ImproveStorage()
 {
   int newhealth;
+  int oldstorage;
+  char yn;
+  int storeup = 500;
+  
+  do
+  {
+    printf("\nWould you like to upgrade your storage? Enter y or n -> ");
+    scanf(" %c", &yn);
+    if (yn != 'y' && yn != 'n')
+    {
+      printf("\nError! Enter y for yes or n for no!\n");
+    }
+  } while (yn != 'y' && yn != 'n');
+  
+  if (money >= storeup && yn == 'y' && storage < MAXSTORAGE)
+  {
+    oldstorage = storage;
+    storage += INITIALSTORAGE;
+    money -= storeup;
+    printf("\nStorage successfully upgraded from %d to %d!\n", oldstorage, storage);
+  }
+
+  else
+  {
+    if (yn == 'y')
+    {
+      storage < MAXSTORAGE ? : printf("\nMaximum storage reached!\n");
+      money >= storeup && storage == MAXSTORAGE ? : printf("\nNot enough money!\n");
+    }
+  }
   
   // Upgrades can be 1, 2, 3, 4, 5.. (multiplier) times INITIALMAXHEALTH
   // Repair: same exact thing
   // I'll let players upgrade a lot for health (maybe 10), but only go up to 3 or 5 for storage
+}
+
+void ImproveShip()
+{
+  //
 }
 
 void Rename(char *name)
