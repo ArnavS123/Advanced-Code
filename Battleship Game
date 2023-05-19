@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#define INITIALMAXHEALTH 100
+#define INITIALMAXHEALTH 1000
 #define MINONE 25
 #define MAXONE 75
 #define MINTWO 75
@@ -15,6 +15,7 @@ int Choose();
 void Stats(char[]);
 void Move();
 void Attack();
+void AttackEffects(int, int);
 void Improve();
 void Rename(char*);
 
@@ -25,6 +26,7 @@ int wood = 0;
 int metal = 0;
 int storage = 500;
 int loc = 1;
+int multiplier = 1;
 
 int main(void)
 {
@@ -35,7 +37,7 @@ int main(void)
   seed = Seed();
   srand(seed);
 
-  printf("\nWelcome to the battleship game!\n\nHere are your choices:\nChoice #1: Display Stats\nChoice #2: Move\nChoice #3: Attack\nChoice #4: Upgrade/Repair\nChoice #5: Rename Ship\nChoice #6: Exit\n\n");
+  printf("\nWelcome to the battleship game!\n\nHere are your choices:\nChoice #1: Display Stats\nChoice #2: Move\nChoice #3: Attack\nChoice #4: Upgrade/Repair\nChoice #5: Rename Ship\nChoice #6: Exit\n");
 
   do
   {
@@ -102,6 +104,7 @@ int Choose()
 
   do
   {
+    printf("\nCurrent health: %d\n", health);
     printf("Please select a choice (1 - 6) - > ");
     scanf("%d", &choice);
     if (choice < 1 || choice > 6)
@@ -120,7 +123,7 @@ void Stats(char name[])
   printf("\nHealth: %d / %d", health, INITIALMAXHEALTH);
   printf("\nCloth: %d / %d", cloth, storage);
   printf("\nWood: %d / %d", wood, storage);
-  printf("\nMetal: %d / %d\n\n", metal, storage);
+  printf("\nMetal: %d / %d\n", metal, storage);
 }
 
 void Move()
@@ -150,31 +153,46 @@ void Move()
         printf("\nError! Choose location 1, 2, or 3!\n");
       }
     } while (loc > 3 || loc < 1);
-    printf("\nSucessfully moved to location %d\n\n", loc);
+    printf("\nSucessfully moved to location %d\n", loc);
   }
   else
   {
-    printf("\nStayed at location %d\n\n", loc);
+    printf("\nStayed at location %d\n", loc);
   }
 }
 
-void Attack() // KEEP THE DEFINED CONSTANTS FOR SHIP DAMAGE
+void Attack()
 {
   switch (loc)
   {
     case 1:
+      AttackEffects(MAXONE, MINONE);
       break;
     case 2:
+      AttackEffects(MAXTWO, MINTWO);
       break;
     case 3:
+      AttackEffects(MAXTHREE, MINTHREE);
       break;
   }
-  health -= 100;
+}
+
+void AttackEffects(int max, int min)
+{
+  money += Randnum(max, min);
+  health -= Randnum(max, min);
+  cloth += Randnum(max, min);
+  wood += Randnum(max, min);
+  metal += Randnum(max, min);
 }
 
 void Improve()
 {
-  printf("4"); // Upgrades can be 1, 2, 3, 4, 5.. times INITIALMAXHEALTH
+  int newhealth;
+  
+  // Upgrades can be 1, 2, 3, 4, 5.. (multiplier) times INITIALMAXHEALTH
+  // Repair: same exact thing
+  // I'll let players upgrade a lot for health (maybe 10), but only go up to 3 or 5 for storage
 }
 
 void Rename(char *name)
@@ -196,10 +214,10 @@ void Rename(char *name)
   {
     printf("\nChange '%s' to -> ", name);
     scanf("%s", name);
-    printf("\nNew ship name now saved as: %s\n\n", name);
+    printf("\nNew ship name now saved as: %s\n", name);
   }
   else
   {
-    printf("\nPrevious name of '%s' retained\n\n", name);
+    printf("\nPrevious name of '%s' retained\n", name);
   }
 }
