@@ -1,7 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+#define INITIALMONEY 100
 #define INITIALMAXHEALTH 100
+#define MAXHEALTH 1500
 #define INITIALSTORAGE 500
 #define MAXSTORAGE 2000
 #define MINONE 25
@@ -18,12 +20,14 @@ void Stats(char[]);
 void Move();
 void Attack();
 void AttackEffects(int, int);
+int CheckMats(int);
 void ImproveStorage();
 void ImproveShip();
 void Rename(char*);
 
-int money = 100;
+int money = INITIALMONEY;
 int health = INITIALMAXHEALTH;
+int curmaxhealth = INITIALMAXHEALTH;
 int cloth = 0;
 int wood = 0;
 int metal = 0;
@@ -35,6 +39,7 @@ int main(void)
   int seed;
   int choice;
   char name[35] = "Your Ship";
+  int choice2;
 
   seed = Seed();
   srand(seed);
@@ -61,8 +66,25 @@ int main(void)
         Attack();
         break;
       case 4:
-        ImproveStorage();
-        ImproveShip();
+        do
+        {
+          printf("\nWould you like to upgrade your storage or ship? Enter 1 for storage and 2 for ship -> ");
+          scanf("%d", &choice2);
+          if (choice2 < 1 || choice2 > 2)
+          {
+            printf("\nError! Enter 1 for storage or 2 for ship!\n");
+          }
+        } while (choice2 < 1 || choice2 > 2);
+
+        switch (choice2)
+        {
+          case 1:
+            ImproveStorage();
+            break;
+          case 2:
+            ImproveShip();
+            break;
+        }
         break;
       case 5:
         Rename(name);
@@ -108,7 +130,7 @@ int Choose()
   do
   {
     printf("\nCurrent health: %d\n", health);
-    printf("Please select a choice (1 - 6) - > ");
+    printf("Please select a choice (1 - 6) -> ");
     scanf("%d", &choice);
     if (choice < 1 || choice > 6)
     {
@@ -185,20 +207,29 @@ void AttackEffects(int max, int min)
   money += Randnum(max, min);
   health -= Randnum(max, min);
   cloth += Randnum(max, min);
+  cloth = CheckMats(cloth);
   wood += Randnum(max, min);
+  wood = CheckMats(wood);
   metal += Randnum(max, min);
+  metal = CheckMats(metal);
+}
+
+int CheckMats(int material)
+{
+  material = material >= storage ? storage : material;
+
+  return (material);
 }
 
 void ImproveStorage()
 {
-  int newhealth;
   int oldstorage;
   char yn;
   int storeup = 500;
   
   do
   {
-    printf("\nWould you like to upgrade your storage? Enter y or n -> ");
+    printf("\nConfirm: Would you like to upgrade your storage? Enter y or n -> ");
     scanf(" %c", &yn);
     if (yn != 'y' && yn != 'n')
     {
@@ -221,16 +252,35 @@ void ImproveStorage()
       storage < MAXSTORAGE ? : printf("\nMaximum storage reached!\n");
       money >= storeup && storage == MAXSTORAGE ? : printf("\nNot enough money!\n");
     }
+
+    printf("\nStorage left at %d\n", storage);
   }
   
-  // Upgrades can be 1, 2, 3, 4, 5.. (multiplier) times INITIALMAXHEALTH
-  // Repair: same exact thing
-  // I'll let players upgrade a lot for health (maybe 10), but only go up to 3 or 5 for storage
+  // Upgrades: go from 1 to 2 to 3 to 4 to 5 (4 upgrades total)
+  // Repair: just max it to 100%
 }
 
 void ImproveShip()
 {
-  //
+  int choice3;
+
+  do
+  {
+    printf("\nWould you like to repair or upgrade your ship? Enter 1 for repair and 2 for upgrade -> ");
+    scanf("%d", &choice3);
+    if (choice3 < 1 || choice3 > 2)
+      {
+        printf("\nError! Enter 1 for repair or 2 for upgrade!\n");
+      }
+  } while (choice3 < 1 || choice3 > 2);
+
+  switch (choice3)
+  {
+    case 1: // make 2 functions: Repair and Upgrade
+      break;
+    case 2:
+      break;
+  }
 }
 
 void Rename(char *name)
