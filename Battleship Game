@@ -3,7 +3,6 @@
 
 #define INITIALMONEY 100
 #define INITIALMAXHEALTH 100
-#define MAXHEALTH 1500
 #define INITIALSTORAGE 500
 #define MAXSTORAGE 2000
 #define CONVFACT 5
@@ -26,6 +25,7 @@ void ImproveStorage();
 void ImproveShip();
 void Repair(char*);
 void Upgrade(char*);
+char UpgradeCost(int);
 void Rename(char*);
 
 int money = INITIALMONEY;
@@ -36,6 +36,7 @@ int wood = 0;
 int metal = 0;
 int storage = INITIALSTORAGE;
 int loc = 1;
+int upgradelevel = 1;
 char name[35] = "Your Ship";
 
 int main(void)
@@ -318,6 +319,7 @@ void Repair(char *name)
 void Upgrade(char *name)
 {
   char yn;
+  int oldmaxhealth = maxhealth;
   
   do
   {
@@ -329,10 +331,46 @@ void Upgrade(char *name)
     }
   } while (yn != 'y' && yn != 'n');
 
-  if (yn == 'y')
+  if (yn == 'y' && UpgradeCost(upgradelevel++) == 'y')
   {
-    // Upgrades: go from 1 to 2 to 3 to 4 to 5 (4 upgrades total)
+    if (upgradelevel > 5)
+    {
+      printf("\nNo more upgrades available!\n");
+    }
+    else
+    {
+      maxhealth += 100 * upgradelevel;
+      health = health == oldmaxhealth ? maxhealth : health;
+      printf("\nUpgraded to level %d\n", upgradelevel);
+    }
   }
+}
+
+char UpgradeCost(int level)
+{
+  int var = 'n';
+  int cost = level * 250;
+
+  if (money >= cost && cloth >= cost && wood >= cost && metal >= cost)
+  {
+    printf("\nUpgrading...\n");
+    money -= cost;
+    cloth -= cost;
+    wood -= cost;
+    metal -= cost;
+    var = 'y';
+  }
+  else
+  {
+    printf("\n");
+    money >= cost ? : printf("Not enough money! ");
+    cloth >= cost ? : printf("Not enough cloth! ");
+    wood >= cost ? : printf("Not enough wood! ");
+    metal >= cost ? : printf("Not enough metal!");
+    printf("\n");
+  }
+  
+  return (var);
 }
 
 void Rename(char *name)
