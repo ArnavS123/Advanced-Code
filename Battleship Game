@@ -1,4 +1,4 @@
-# This is a battleship game.
+# This is a battleship game; inspired by AC4.
 #include <stdio.h>
 #include <stdlib.h>
 
