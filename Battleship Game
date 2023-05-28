@@ -1,4 +1,3 @@
-# This is a battleship game; inspired by AC4. Hunt for materials and money from other battleships and upgrade your own to hunt bigger battleships for bigger rewards.
 #include <stdio.h>
 #include <stdlib.h>
 
@@ -22,6 +21,7 @@ void Move();
 void Attack();
 void AttackEffects(int, int);
 int CheckMats(int);
+void Improve();
 void ImproveStorage();
 void ImproveShip();
 void Repair(char*);
@@ -44,7 +44,6 @@ int main(void)
 {
   int seed;
   int choice;
-  int choice2;
 
   seed = Seed();
   srand(seed);
@@ -71,25 +70,7 @@ int main(void)
         Attack();
         break;
       case 4:
-        do
-        {
-          printf("\nWould you like to upgrade your storage or ship? Enter 1 for storage and 2 for ship -> ");
-          scanf("%d", &choice2);
-          if (choice2 < 1 || choice2 > 2)
-          {
-            printf("\nError! Enter 1 for storage or 2 for ship!\n");
-          }
-        } while (choice2 < 1 || choice2 > 2);
-
-        switch (choice2)
-        {
-          case 1:
-            ImproveStorage();
-            break;
-          case 2:
-            ImproveShip();
-            break;
-        }
+        Improve();
         break;
       case 5:
         Rename(name);
@@ -224,6 +205,31 @@ int CheckMats(int material)
   material = material >= storage ? storage : material;
 
   return (material);
+}
+
+void Improve()
+{
+  int choice2;
+
+  do
+  {
+    printf("\nWould you like to upgrade your storage or ship? Enter 1 for storage and 2 for ship -> ");
+      scanf("%d", &choice2);
+    if (choice2 < 1 || choice2 > 2)
+    {
+      printf("\nError! Enter 1 for storage or 2 for ship!\n");
+    }
+  } while (choice2 < 1 || choice2 > 2);
+
+  switch (choice2)
+  {
+    case 1:
+      ImproveStorage();
+      break;
+    case 2:
+      ImproveShip();
+      break;
+  }
 }
 
 void ImproveStorage()
