@@ -1,5 +1,5 @@
 #This is a battleship game; inspired by AC4. Hunt battleships to earn money and materials to upgrade your ship to hunt bigger battleships carrying bigger rewards.
-#include <stdio.h>
+#include <stdio.hlllllllll
 #include <stdlib.h>
 
 #define INITIALMONEY 100
